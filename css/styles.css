@@ -1,0 +1,21 @@
+@font-face {
+    font-family: arabicfont;
+    src: url("./../fonts/LPMQ.ttf");
+}
+
+.terjemah {
+    color: grey;
+    font-size: smaller;
+}
+
+.arabic {
+    text-align: right;
+    font-family: arabicfont;
+    font-size: large;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
