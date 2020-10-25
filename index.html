@@ -1,0 +1,79 @@
+<html>
+<style>
+    @font-face {
+        font-family: arabicfont;
+        src: url("./fonts/LPMQ.ttf");
+    }
+
+    .arabic {
+        float: right;
+        text-align: right;
+        font-family: arabicfont;
+    }
+
+    .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+</style>
+
+<body>
+    <center>
+        <h1>Al-Quran JSON Indonesia Kemenag</h1>
+    </center>
+    <span id="message"></span>
+    <hr>
+    <table width="100%">
+        <tr valign="top">
+            <td style="min-width: 150;">
+                <div id="sidenav"></div>
+            </td>
+            <td>
+                <div id="surah" style="width: 100%;"></div>
+            </td>
+        </tr>
+    </table>
+</body>
+<script>
+    var baseurl = 'https://raw.githubusercontent.com/iqbalsyamhad/Al-Quran-JSON-Indonesia-Kemenag/master/';
+    (function () {
+        fetch(baseurl + 'Daftar%20Surat.json')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                var navContainer = document.getElementById("sidenav");
+                var summary = document.getElementById("message");
+                summary.innerText = json.msg;
+                for (var i = 0; i < json.data.length; i++) {
+                    var div = document.createElement("div");
+                    div.innerHTML = '<a style="cursor: pointer;" onclick="getSurat(' + json.data[i].id + ')">' + json.data[i].id + '. Surat ' + json.data[i].surat_name + '</a>';
+                    navContainer.appendChild(div);
+                }
+            })
+            .catch(function (err) {
+                alert('error: ' + err);
+            });
+    })();
+    function getSurat(id) {
+        fetch(baseurl + 'Surat/' + id + '.json')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                var mainContainer = document.getElementById("surah");
+                mainContainer.innerHTML = '';
+                for (var i = 0; i < data.data.length; i++) {
+                    var div = document.createElement("div");
+                    div.innerHTML = '<span class="arabic">' + data.data[i].aya_text + ' <span style="font-size: 14; border: 1px solid #000000; padding-left: 10; padding-right: 10; border-radius: 50px;">' + data.data[i].aya_number + '</span></span><div class="clearfix"></div>';
+                    mainContainer.appendChild(div);
+                }
+            })
+            .catch(function (err) {
+                alert('error: ' + err);
+            });
+    }
+</script>
+
+</html>
